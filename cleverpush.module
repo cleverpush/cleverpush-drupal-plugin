@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements hook_page_attachments().
+ */
+function cleverpush_page_attachments(array &$page) {
+    $config = \Drupal::config('cleverpush.settings');
+    $subdomain = $config->get('subdomain');
+
+    if (!empty($subdomain)) {
+        $script_content = '
+        (function(c,l,v,r,p,s,h){c[\'CleverPushObject\']=p;c[p]=c[p]||function(){(c[p].q=c[p].q||[]).push(arguments)},c[p].l=1*new Date();s=l.createElement(v),h=l.getElementsByTagName(v)[0];s.async=1;s.src=r;h.parentNode.insertBefore(s,h)})(window,document,\'script\',\'//' . $subdomain . '.cleverpush.com/loader.js\',\'cleverpush\');
+        cleverpush(\'triggerOptIn\');
+        cleverpush(\'checkNotificationClick\');
+        ';
+        $page['#attached']['html_head'][] = [[
+            '#tag' => 'script',
+            '#value' => $script_content,
+        ], 'cleverpush_script'];
+    }
+}

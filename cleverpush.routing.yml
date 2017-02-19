@@ -1,0 +1,7 @@
+cleverpush.config:
+    path: /admin/config/cleverpush
+    defaults:
+        _form: 'Drupal\cleverpush\Form\SettingsForm'
+        _title: 'CleverPush'
+    requirements:
+        _permission: 'access administration pages'
