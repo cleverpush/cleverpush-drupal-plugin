@@ -5,9 +5,28 @@
  */
 function cleverpush_page_attachments(array &$page) {
     $config = \Drupal::config('cleverpush.settings');
+
+    $channelId = $config->get('channelId');
     $subdomain = $config->get('subdomain');
 
-    if (!empty($subdomain)) {
+    if (!empty($channelId)) {
+        $script_content = '
+        CleverPush = window.CleverPush || [];
+        CleverPush.push([\'init\', { channelId: \'' . $channelId . '\' }]);
+        ';
+        $page['#attached']['html_head'][] = [[
+            '#tag' => 'script',
+            '#attributes' => [
+                'async' => true,
+                'src' => 'https://static.cleverpush.com/sdk/cleverpush.js'
+            ]
+        ], 'cleverpush_sdk_script'];
+        $page['#attached']['html_head'][] = [[
+            '#tag' => 'script',
+            '#value' => $script_content,
+        ], 'cleverpush_script'];
+
+    } else if (!empty($subdomain)) {
         $script_content = '
         (function(c,l,v,r,p,s,h){c[\'CleverPushObject\']=p;c[p]=c[p]||function(){(c[p].q=c[p].q||[]).push(arguments)},c[p].l=1*new Date();s=l.createElement(v),h=l.getElementsByTagName(v)[0];s.async=1;s.src=r;h.parentNode.insertBefore(s,h)})(window,document,\'script\',\'//' . $subdomain . '.cleverpush.com/loader.js\',\'cleverpush\');
         cleverpush(\'triggerOptIn\');

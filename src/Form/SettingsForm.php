@@ -22,11 +22,11 @@ class SettingsForm extends ConfigFormBase
     {
         $config = $this->config('cleverpush.settings');
 
-        $form['subdomain'] = array(
+        $form['channelId'] = array(
             '#type' => 'textfield',
-            '#title' => 'CleverPush Subdomain',
-            '#description' => 'Bitte gib die Subdomain deines Kanals hier ein',
-            '#default_value' => $config->get('subdomain'),
+            '#title' => 'CleverPush Kanal ID',
+            '#description' => 'Bitte gib die ID deines Kanals hier ein',
+            '#default_value' => $config->get('channelId'),
         );
 
         $form['submit'] = array(
@@ -39,7 +39,7 @@ class SettingsForm extends ConfigFormBase
 
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $this->config('cleverpush.settings')
-            ->set('subdomain', $form_state->getValue('subdomain'))
+            ->set('channelId', $form_state->getValue('channelId'))
             ->save();
 
         parent::submitForm($form, $form_state);
