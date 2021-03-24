@@ -4,6 +4,7 @@ namespace Drupal\cleverpush\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+Use Drupal\Core\File\FileSystemInterface;
 
 class SettingsForm extends ConfigFormBase
 {
@@ -40,9 +41,13 @@ class SettingsForm extends ConfigFormBase
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $channelId = $form_state->getValue('channelId');
 
-        $directory = file_default_scheme() . '://cleverpush';
+        $fileSystemConfig = \Drupal::config('system.file');
+        $fileSystem = \Drupal::service('file_system');
 
-        file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+        $directory = $fileSystemConfig->get('default_scheme') . '://cleverpush';
+        
+        $options = FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS;
+        $fileSystem->prepareDirectory($directory, $options);
 
         $filenameWorker = $directory . '/cleverpush-worker.js';
         file_save_data('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FILE_EXISTS_REPLACE);
