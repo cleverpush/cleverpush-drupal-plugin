@@ -45,14 +45,14 @@ class SettingsForm extends ConfigFormBase
         $fileSystem = \Drupal::service('file_system');
 
         $directory = $fileSystemConfig->get('default_scheme') . '://cleverpush';
-        
+
         $options = FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS;
         $fileSystem->prepareDirectory($directory, $options);
 
         $filenameWorker = $directory . '/cleverpush-worker.js';
-        file_save_data('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FILE_EXISTS_REPLACE);
+        file_save_data('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FileSystemInterface::EXISTS_REPLACE);
         $filenameManifest = $directory . '/cleverpush-manifest.json';
-        file_save_data('{ "start_url": "/", "display": "standalone", "gcm_sender_id": "890396972010","gcm_user_visible_only": true }', $filenameManifest, FILE_EXISTS_REPLACE);
+        file_save_data('{ "start_url": "/", "display": "standalone", "gcm_sender_id": "890396972010","gcm_user_visible_only": true }', $filenameManifest, FileSystemInterface::EXISTS_REPLACE);
 
         $this->config('cleverpush.settings')
             ->set('channelId', $channelId)
