@@ -13,11 +13,10 @@ function cleverpush_page_attachments(array &$page) {
     // $module_path = $module_handler->getModule('cleverpush')->getPath();
 
     if (!empty($channelId)) {
-        if (!empty($config->get('workerFile')) && !empty($config->get('manifestFile'))) {
+        if (!empty($config->get('workerFile'))) {
             $script_content = '
             window.cleverPushConfig = {
               serviceWorkerFile: \'' . $config->get('workerFile') . '\',
-              gcmManifestPath: \'' . $config->get('manifestFile') . '\'
             };';
             $page['#attached']['html_head'][] = [[
                 '#tag' => 'script',

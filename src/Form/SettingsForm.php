@@ -51,13 +51,10 @@ class SettingsForm extends ConfigFormBase
 
         $filenameWorker = $directory . '/cleverpush-worker.js';
         file_save_data('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FileSystemInterface::EXISTS_REPLACE);
-        $filenameManifest = $directory . '/cleverpush-manifest.json';
-        file_save_data('{ "start_url": "/", "display": "standalone", "gcm_sender_id": "890396972010","gcm_user_visible_only": true }', $filenameManifest, FileSystemInterface::EXISTS_REPLACE);
 
         $this->config('cleverpush.settings')
             ->set('channelId', $channelId)
             ->set('workerFile', parse_url(file_create_url($filenameWorker), PHP_URL_PATH))
-            ->set('manifestFile', parse_url(file_create_url($filenameManifest), PHP_URL_PATH))
             ->save();
 
         parent::submitForm($form, $form_state);
