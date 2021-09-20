@@ -1,6 +1,7 @@
 {
     "name": "cleverpush/cleverpush-drupal-plugin",
     "description": "Official Drupal plugin for CleverPush",
+    "version": "1.0.0",
     "type": "drupal-module",
     "homepage": "https://github.com/cleverpush/cleverpush-drupal-plugin",
     "authors": [
