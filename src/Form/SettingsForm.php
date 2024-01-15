@@ -50,11 +50,11 @@ class SettingsForm extends ConfigFormBase
         $fileSystem->prepareDirectory($directory, $options);
 
         $filenameWorker = $directory . '/cleverpush-worker.js';
-        file_save_data('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FileSystemInterface::EXISTS_REPLACE);
+        \Drupal::service('file.repository')->writeData('importScripts("https://static.cleverpush.com/channel/worker/' . $channelId . '.js");', $filenameWorker, FileSystemInterface::EXISTS_REPLACE);
 
         $this->config('cleverpush.settings')
             ->set('channelId', $channelId)
-            ->set('workerFile', parse_url(file_create_url($filenameWorker), PHP_URL_PATH))
+            ->set('workerFile', parse_url(\Drupal::service('file_url_generator')->generateAbsoluteString($filenameWorker), PHP_URL_PATH))
             ->save();
 
         parent::submitForm($form, $form_state);
